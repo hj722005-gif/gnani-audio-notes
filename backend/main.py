@@ -8,6 +8,8 @@ from pydantic import BaseModel
 from dotenv import load_dotenv
 from supabase import create_client, Client
 from pydub import AudioSegment
+import imageio_ffmpeg
+AudioSegment.converter = imageio_ffmpeg.get_ffmpeg_exe()
 import tempfile
 
 load_dotenv()
