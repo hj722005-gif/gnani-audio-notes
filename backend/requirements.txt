@@ -6,5 +6,5 @@ requests
 google-generativeai
 python-dotenv
 pydantic
-pydub  
-imageio-ffmpeg 
+pydub
+imageio-ffmpeg
