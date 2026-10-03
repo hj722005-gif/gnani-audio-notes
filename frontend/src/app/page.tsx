@@ -5,7 +5,7 @@ import { UploadCloud, FileAudio, Loader2, CheckCircle2, AlertCircle } from "luci
 import axios from "axios";
 import { motion, AnimatePresence } from "framer-motion";
 
-const API_URL = "http://localhost:8000";
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
 
 type Status = "idle" | "uploading" | "uploaded" | "transcribing" | "summarizing" | "done" | "failed";
 
