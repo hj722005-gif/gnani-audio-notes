@@ -8,4 +8,3 @@ python-dotenv
 pydantic
 pydub
 imageio-ffmpeg
-pyaudioop
