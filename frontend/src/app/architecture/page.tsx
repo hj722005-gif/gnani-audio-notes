@@ -51,8 +51,8 @@ export default function Architecture() {
         <p>
           Instead of keeping an HTTP request open for minutes (which causes timeouts on platforms like Vercel or Render), 
           the frontend uses a <strong>polling mechanism</strong>. Every 2 seconds, it pings the <code>/status/&#123;id&#125;</code> 
-          endpoint. The UI updates dynamically based on the database status (<code>uploading</code> -> <code>uploaded</code> -> 
-          <code>transcribing</code> -> <code>summarizing</code> -> <code>done</code>/<code>failed</code>).
+          endpoint. The UI updates dynamically based on the database status (<code>uploading</code> -&gt; <code>uploaded</code> -&gt; 
+          <code>transcribing</code> -&gt; <code>summarizing</code> -&gt; <code>done</code>/<code>failed</code>).
         </p>
 
         <h2>Future Improvements (With more time)</h2>
