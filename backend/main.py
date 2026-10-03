@@ -94,7 +94,7 @@ def process_audio(file_id: str, file_path: str, original_filename: str, language
             "transcript": full_transcript.strip()
         }).eq("id", file_id).execute()
         
-        # Call Gemini for summary via REST API to avoid SDK deprecation issues
+        # Call Gemini for summary via REST API with retries for 503 errors
         prompt = f"Summarize the following transcript into a concise paragraph. Also provide 3 bullet points with key takeaways.\n\nTranscript: {full_transcript}"
         
         gemini_url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent?key={GEMINI_API_KEY}"
@@ -103,11 +103,17 @@ def process_audio(file_id: str, file_path: str, original_filename: str, language
         }
         gemini_headers = {"Content-Type": "application/json"}
         
-        gemini_res = requests.post(gemini_url, json=gemini_payload, headers=gemini_headers)
-        if gemini_res.status_code == 200:
-            summary = gemini_res.json()["candidates"][0]["content"]["parts"][0]["text"]
-        else:
-            raise Exception(f"Gemini API Error: {gemini_res.text}")
+        summary = ""
+        max_retries = 3
+        for attempt in range(max_retries):
+            gemini_res = requests.post(gemini_url, json=gemini_payload, headers=gemini_headers)
+            if gemini_res.status_code == 200:
+                summary = gemini_res.json()["candidates"][0]["content"]["parts"][0]["text"]
+                break
+            elif attempt < max_retries - 1:
+                time.sleep(2 ** attempt) # Exponential backoff
+            else:
+                raise Exception(f"Gemini API Error: {gemini_res.text}")
         
         # Update status to done
         supabase.table("transcripts").update({
